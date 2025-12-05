@@ -16,11 +16,11 @@ biv::Speed Mario::get_speed() const noexcept {
 }
 
 void Mario::move_map_left() noexcept {
-	move_horizontal_offset(biv::MapMovable::MAP_STEP);
+	move_horizontal_offset(-biv::MapMovable::MAP_STEP);
 }
 
 void Mario::move_map_right() noexcept {
-	move_horizontal_offset(-biv::MapMovable::MAP_STEP);
+	move_horizontal_offset(biv::MapMovable::MAP_STEP);
 }
 
 void Mario::process_horizontal_static_collision(Rect* obj) noexcept {
@@ -32,11 +32,10 @@ void Mario::process_mario_collision(Collisionable* mario) noexcept {}
 
 void Mario::process_vertical_static_collision(Rect* obj) noexcept {
 	if (vspeed > 0) {
-		// Марио упал на корабль.
-		top_left.y -= vspeed;
+		top_left.y = obj->get_top() - height;
+		on_ground = true;
 	} else if (vspeed < 0) {
-		// Марио ударился головой о полку и после этого должен падать вниз.
-		top_left.y -= vspeed;
+		top_left.y = obj->get_bottom();
 	}
 	vspeed = 0;
 }

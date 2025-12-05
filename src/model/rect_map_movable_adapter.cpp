@@ -10,9 +10,9 @@ RectMapMovableAdapter::RectMapMovableAdapter(
 }
 
 void RectMapMovableAdapter::move_map_left() noexcept {
-	top_left.x -= MapMovable::MAP_STEP;
+	top_left.x += MapMovable::MAP_STEP;
 }
 
 void RectMapMovableAdapter::move_map_right() noexcept {
-	top_left.x += MapMovable::MAP_STEP;
+	top_left.x -= MapMovable::MAP_STEP;
 }

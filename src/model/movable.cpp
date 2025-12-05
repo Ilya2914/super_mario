@@ -19,8 +19,9 @@ float Movable::get_vspeed() const noexcept {
 }
 
 void Movable::jump() noexcept {
-	if (vspeed == 0) {
+	if (on_ground) {
 		vspeed = JUMP_SPEED;
+		on_ground = false;
 	}
 }
 
@@ -40,6 +41,7 @@ void Movable::move_horizontally() noexcept {
 }
 
 void Movable::move_vertically() noexcept {
+	on_ground = false;
 	if (vspeed < MAX_V_SPEED) {
 		vspeed += V_ACCELERATION;
 	}

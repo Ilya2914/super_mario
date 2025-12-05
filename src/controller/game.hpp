@@ -17,6 +17,7 @@ namespace biv {
 			std::vector<Movable*> movable_objs;
 			
 			Mario* mario = nullptr;
+			Rect* level_end_obj = nullptr;
 			
 			bool is_finished_ = false;
 			bool is_level_end_ = false;
@@ -33,6 +34,7 @@ namespace biv {
 			void check_horizontally_static_collisions() noexcept;
 			void check_mario_collision();
 			bool check_static_collisions(Collisionable* obj) const noexcept;
+			bool check_static_collisions(const Rect& rect) const noexcept;
 			void check_vertically_static_collisions() noexcept;
 			
 			void finish() noexcept;
@@ -51,6 +53,8 @@ namespace biv {
 			void remove_movable(Movable*);
 			void remove_objs();
 			void remove_static_obj(Rect*);
+
+			void set_level_end_to_last_static();
 			
 			void start_level() noexcept;
 

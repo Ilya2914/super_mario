@@ -8,3 +8,7 @@ ConsoleMoney::ConsoleMoney(const Coord& top_left, const int width, const int hei
 char ConsoleMoney::get_brush() const noexcept {
 	return '$';
 }
+
+bool ConsoleMoney::is_active() const noexcept {
+	return Collisionable::is_active();
+}

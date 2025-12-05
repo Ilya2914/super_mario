@@ -15,6 +15,8 @@ void ConsoleUIFactory::clear_data() {
 	full_boxes.clear();
 	ships.clear();
 	enemies.clear();
+	flying_enemies.clear();
+	jumping_enemies.clear();
 	moneys.clear();
 }
 
@@ -33,6 +35,28 @@ void ConsoleUIFactory::create_enemy(
 ) {
 	ConsoleEnemy* enemy = new ConsoleEnemy(top_left, width, height);
 	enemies.push_back(enemy);
+	game->add_map_movable(enemy);
+	game->add_movable(enemy);
+	game->add_collisionable(enemy);
+	game_map->add_obj(enemy);
+}
+
+void ConsoleUIFactory::create_flying_enemy(
+	const Coord& top_left, const int width, const int height
+) {
+	ConsoleFlyingEnemy* enemy = new ConsoleFlyingEnemy(top_left, width, height, game);
+	flying_enemies.push_back(enemy);
+	game->add_map_movable(enemy);
+	game->add_movable(enemy);
+	game->add_collisionable(enemy);
+	game_map->add_obj(enemy);
+}
+
+void ConsoleUIFactory::create_jumping_enemy(
+	const Coord& top_left, const int width, const int height
+) {
+	ConsoleJumpingEnemy* enemy = new ConsoleJumpingEnemy(top_left, width, height);
+	jumping_enemies.push_back(enemy);
 	game->add_map_movable(enemy);
 	game->add_movable(enemy);
 	game->add_collisionable(enemy);
@@ -88,6 +112,10 @@ void ConsoleUIFactory::create_ship(
 	game_map->add_obj(ship);
 }
 
+void ConsoleUIFactory::finalize_level() {
+	game->set_level_end_to_last_static();
+}
+
 biv::GameMap* ConsoleUIFactory::get_game_map() {
 	return game_map;
 }
@@ -100,5 +128,5 @@ biv::Mario* ConsoleUIFactory::get_mario() {
 // 									PRIVATE
 // ----------------------------------------------------------------------------
 void ConsoleUIFactory::create_game_map() {
-	game_map = new ConsoleGameMap(30, 200);
+	game_map = new ConsoleGameMap(30, 120);
 }

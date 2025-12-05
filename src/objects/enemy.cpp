@@ -24,7 +24,14 @@ void Enemy::process_horizontal_static_collision(Rect* obj) noexcept {
 }
 
 void Enemy::process_mario_collision(Collisionable* mario) noexcept {
-	if (mario->get_speed().v > 0 && mario->get_speed().v != V_ACCELERATION) {
+	Rect mario_rect = mario->get_rect();
+	Rect enemy_rect = get_rect();
+
+	// Марио убивает врага, если падает и его ноги находятся в верхней части врага
+	bool is_falling = mario->get_speed().v > 0;
+	bool is_above = mario_rect.get_bottom() < enemy_rect.get_y() + enemy_rect.get_height() * 0.7f;
+
+	if (is_falling && is_above) {
 		kill();
 	} else {
 		mario->kill();
@@ -32,9 +39,6 @@ void Enemy::process_mario_collision(Collisionable* mario) noexcept {
 }
 
 void Enemy::process_vertical_static_collision(Rect* obj) noexcept {
-	// Проверка: не свалился ли враг с корабля. 
-	// Т.е., если он на краю, то он должен разверуться 
-	// и побежать в обратную сторону.
 	top_left.x += hspeed;
 	if (!has_collision(obj)) {
 		process_horizontal_static_collision(obj);
@@ -42,9 +46,9 @@ void Enemy::process_vertical_static_collision(Rect* obj) noexcept {
 		top_left.x -= hspeed;
 	}
 	
-	// Особенность модели вертикального передвижения в игре.
 	if (vspeed > 0) {
 		top_left.y -= vspeed;
 		vspeed = 0;
+		on_ground = true;
 	}
 }

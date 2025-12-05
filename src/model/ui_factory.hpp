@@ -18,6 +18,10 @@ namespace biv {
 				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_enemy(
 				const Coord& top_left, const int width, const int height) = 0;
+			virtual void create_flying_enemy(
+				const Coord& top_left, const int width, const int height) = 0;
+			virtual void create_jumping_enemy(
+				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_full_box(
 				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_mario(
@@ -26,6 +30,7 @@ namespace biv {
 				const Coord& top_left, const int width, const int height) = 0;
 			virtual void create_ship(
 				const Coord& top_left, const int width, const int height) = 0;
+			virtual void finalize_level() = 0;
 			virtual GameMap* get_game_map() = 0;
 			virtual Mario* get_mario() = 0;
 			

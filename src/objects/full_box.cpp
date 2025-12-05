@@ -22,6 +22,7 @@ void FullBox::process_mario_collision(Collisionable* mario) noexcept {
 	if (mario->get_speed().v < 0) {
 		kill();
 		ui_factory->create_money({top_left.x, top_left.y - 3}, 3, 2);
+		ui_factory->create_box(top_left, width, height);
 	}
 }
 

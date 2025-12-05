@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 
 using biv::ConsoleGameMap;
@@ -29,24 +30,22 @@ void ConsoleGameMap::add_obj(ConsoleUIObject* obj) {
 }
 
 void ConsoleGameMap::clear() noexcept {
-	// Воздух
 	for (int i = 0; i < width; i++) {
 		map[0][i] = ' ';
 	}
 	map[0][width] = '\0';
 	
 	for (int i = 1; i < height - 3; i++) {
-		std::sprintf(map[i], map[0]);
+		std::strcpy(map[i], map[0]);
 	}
 	
-	// Вода
 	for (int i = 0; i < width; i++) {
 		map[height - 3][i] = '~';
 	}
 	map[height - 3][width] = '\0';
 	
 	for (int i = height - 2; i < height; i++) {
-		std::sprintf(map[i], map[height - 3]);
+		std::strcpy(map[i], map[height - 3]);
 	}
 }
 
@@ -54,6 +53,8 @@ void ConsoleGameMap::refresh() noexcept {
 	clear();
 	
 	for (ConsoleUIObject* obj: objs) {
+		if (!obj->is_active()) continue;
+
 		int left = obj->get_left();
 		int top = obj->get_top();
 		int right = obj->get_right();
@@ -81,6 +82,7 @@ void ConsoleGameMap::remove_objs() {
 
 void ConsoleGameMap::show() const noexcept {
 	for (int i = 0; i < height; i++) {
-		std::cout << map[i];
+		std::cout << map[i] << '\n';
 	}
+	std::cout << std::flush;
 }

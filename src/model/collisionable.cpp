@@ -4,11 +4,22 @@ using biv::Collisionable;
 
 bool Collisionable::has_collision(Rect* obj) const noexcept {
 	Rect myself = get_rect();
+	
+	float my_left = myself.get_x();
+	float my_right = my_left + myself.get_width();
+	float my_top = myself.get_y();
+	float my_bottom = my_top + myself.get_height();
+	
+	float obj_left = obj->get_x();
+	float obj_right = obj_left + obj->get_width();
+	float obj_top = obj->get_y();
+	float obj_bottom = obj_top + obj->get_height();
+	
 	return (
-		myself.get_right() > obj->get_left() &&
-		myself.get_left() < obj->get_right() && 
-		myself.get_bottom() > obj->get_top() && 
-		myself.get_top() < obj->get_bottom()
+		my_right > obj_left &&
+		my_left < obj_right && 
+		my_bottom > obj_top && 
+		my_top < obj_bottom
 	);
 }
 

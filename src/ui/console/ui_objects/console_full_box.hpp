@@ -13,5 +13,6 @@ namespace biv {
 			);
 			
 			char get_brush() const noexcept override;
+			bool is_active() const noexcept override;
 	};
 }

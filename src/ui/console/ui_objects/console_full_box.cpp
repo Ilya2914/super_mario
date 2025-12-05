@@ -15,3 +15,7 @@ char ConsoleFullBox::get_brush() const noexcept {
 		return '-';
 	}
 }
+
+bool ConsoleFullBox::is_active() const noexcept {
+	return Collisionable::is_active();
+}

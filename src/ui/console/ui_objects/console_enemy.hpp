@@ -9,5 +9,6 @@ namespace biv {
 			ConsoleEnemy(const Coord& top_left, const int width, const int height);
 
 			char get_brush() const noexcept override;
+			bool is_active() const noexcept override;
 	};
 }

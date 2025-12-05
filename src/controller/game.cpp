@@ -45,7 +45,16 @@ void Game::check_mario_collision() {
 			if (!mario->is_active()) {
 				break;
 			} else if (!obj->is_active()) {
-				// TODO
+				if (Movable* m = dynamic_cast<Movable*>(obj)) {
+					remove_movable(m);
+				}
+				if (MapMovable* mm = dynamic_cast<MapMovable*>(obj)) {
+					remove_map_movable(mm);
+				}
+				if (Rect* r = dynamic_cast<Rect*>(obj)) {
+					remove_static_obj(r);
+				}
+
 				collisionable_objs[i] = collisionable_objs.back();
 				collisionable_objs.pop_back();
 				i--;
@@ -63,8 +72,20 @@ bool Game::check_static_collisions(Collisionable* obj) const noexcept {
 	return false;
 }
 
+bool Game::check_static_collisions(const Rect& rect) const noexcept {
+	for (Rect* static_obj: static_objs) {
+		if (rect.get_right() > static_obj->get_left() &&
+			rect.get_left() < static_obj->get_right() &&
+			rect.get_bottom() > static_obj->get_top() && 
+			rect.get_top() < static_obj->get_bottom()) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Game::check_vertically_static_collisions() noexcept {
-	if (mario->has_collision(static_objs[static_objs.size() - 1])) {
+	if (level_end_obj && mario->has_collision(level_end_obj)) {
 		is_level_end_ = true;
 	}
 	
@@ -135,11 +156,18 @@ void Game::remove_objs() {
 	map_movable_objs.clear();
 	movable_objs.clear();
 	static_objs.clear();
+	level_end_obj = nullptr;
 	remove_mario();
 }
 
 void Game::remove_static_obj(Rect* obj) {
 	remove_obj(static_objs, obj);
+}
+
+void Game::set_level_end_to_last_static() {
+	if (!static_objs.empty()) {
+		level_end_obj = static_objs.back();
+	}
 }
 
 void Game::start_level() noexcept {
