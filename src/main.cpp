@@ -13,8 +13,10 @@
 		6. Завершение
 */
 #include <thread>
+#include <QApplication>
 
-#include "console_ui_factory.hpp"
+#include "qt_ui_factory.hpp"
+#include "qt_game_map.hpp"
 #include "first_level.hpp"
 #include "game.hpp"
 #include "game_level.hpp"
@@ -24,19 +26,19 @@
 #include "ui_factory.hpp"
 #include "user_input.hpp"
 
-int main() {
+int main(int argc, char *argv[]) {
 	using namespace std::chrono_literals;
-	biv::os::init_settings();
+	biv::os::init_settings(argc, argv);
 	
 	biv::Game game;
-	biv::UIFactory* ui_factory = new biv::ConsoleUIFactory(&game);
+	biv::UIFactory* ui_factory = new biv::QtUIFactory(&game);
 	biv::GameMap* game_map = ui_factory->get_game_map();
 	biv::GameLevel* game_level = new biv::FirstLevel(ui_factory);
 	biv::Mario* mario = ui_factory->get_mario();
 	
 	biv::os::UserInput user_input;
 	do {
-		user_input = biv::os::get_user_input();
+		user_input = dynamic_cast<biv::QtGameMap*>(game_map)->get_input();
 		switch (user_input) {
 			case biv::os::UserInput::MAP_LEFT:
 				mario->move_map_left();
@@ -58,6 +60,8 @@ int main() {
 			case biv::os::UserInput::EXIT:
 				game.finish();
 				break;
+            default:
+                break;
 		}
 		
 		game.move_objs_horizontally();
@@ -96,5 +100,5 @@ int main() {
 		!game.is_finished()
 	);
 	
-	
+	return 0;
 }
